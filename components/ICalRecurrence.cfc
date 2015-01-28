@@ -77,9 +77,6 @@
   <cffunction name="advanceTo" access="public" returntype="void" output="false">
     <cfargument name="newDate" type="date" required="true" />
 
-    <!--- Define local variables --->
-    <cfset var dateValue = createObject("java", "com.google.ical.values.DateValueImpl") />
-
     <cfset getIterator().advanceTo(dateToDateValue(arguments.newDate)) />
   </cffunction>
 
