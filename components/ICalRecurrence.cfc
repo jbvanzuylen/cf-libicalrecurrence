@@ -42,16 +42,16 @@
     <cfset var rdata = createObject("java", "java.lang.StringBuilder") />
 
     <!--- Build recurrence data --->
-    <cfif structKeyExists(arguments, "rrule") AND (NOT isNull(arguments.rrule))>
+    <cfif structKeyExists(arguments, "rrule") AND (NOT isNull(arguments.rrule)) AND (len(arguments.rrule) gt 0)>
       <cfset rdata.append("RRULE:").append(arguments.rrule).append(chr(10)) />
     </cfif>
-    <cfif structKeyExists(arguments, "exrule") AND (NOT isNull(arguments.exrule))>
+    <cfif structKeyExists(arguments, "exrule") AND (NOT isNull(arguments.exrule)) AND (len(arguments.exrule) gt 0)>
       <cfset rdata.append("EXRULE:").append(arguments.exrule).append(chr(10)) />
     </cfif>
-    <cfif structKeyExists(arguments, "rdate") AND (NOT isNull(arguments.rdate))>
+    <cfif structKeyExists(arguments, "rdate") AND (NOT isNull(arguments.rdate)) AND (len(arguments.rdate) gt 0)>
       <cfset rdata.append("RDATE:").append(arguments.rdate).append(chr(10)) />
     </cfif>
-    <cfif structKeyExists(arguments, "exdate") AND (NOT isNull(arguments.exdate))>
+    <cfif structKeyExists(arguments, "exdate") AND (NOT isNull(arguments.exdate)) AND (len(arguments.exdate) gt 0)>
       <cfset rdata.append("EXDATE:").append(arguments.exdate).append(chr(10)) />
     </cfif>
 
