@@ -3,9 +3,9 @@
   <info>
     <type>web</type>
     <id>5FB828E4-0080-4FB1-AFD2E5551A54CCA9</id>
-    <name>cflibicalrecurrence</name>
-    <label>cflibicalrecurrence</label>
-    <description></description>
+    <name>cf-libicalrecurrence</name>
+    <label>iCalendar recurrence library</label>
+    <description>Build on top of the google-rfc-2445 library, this library implements a mechanism for evaluating recurrence rules of the RFC 2445.</description>
     <version>@VERSION@</version>
     <image></image>
     <author>Jean-Bernard van Zuylen</author>
