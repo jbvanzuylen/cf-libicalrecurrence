@@ -37,31 +37,11 @@
     <cfargument name="rdate" type="string" required="false" />
     <cfargument name="exdate" type="string" required="false" />
 
-    <!--- Define local variables --->
-    <cfset var iteratorFactory = createObject("java", "com.google.ical.iter.RecurrenceIteratorFactory") />
-    <cfset var rdata = createObject("java", "java.lang.StringBuilder") />
+    <!--- Save arguments --->
+    <cfset variables.data = structCopy(arguments) />
 
-    <!--- Build recurrence data --->
-    <cfif structKeyExists(arguments, "rrule") AND (NOT isNull(arguments.rrule)) AND (len(arguments.rrule) gt 0)>
-      <cfset rdata.append("RRULE:").append(arguments.rrule).append(chr(10)) />
-    </cfif>
-    <cfif structKeyExists(arguments, "exrule") AND (NOT isNull(arguments.exrule)) AND (len(arguments.exrule) gt 0)>
-      <cfset rdata.append("EXRULE:").append(arguments.exrule).append(chr(10)) />
-    </cfif>
-    <cfif structKeyExists(arguments, "rdate") AND (NOT isNull(arguments.rdate)) AND (len(arguments.rdate) gt 0)>
-      <cfset rdata.append("RDATE:").append(arguments.rdate).append(chr(10)) />
-    </cfif>
-    <cfif structKeyExists(arguments, "exdate") AND (NOT isNull(arguments.exdate)) AND (len(arguments.exdate) gt 0)>
-      <cfset rdata.append("EXDATE:").append(arguments.exdate).append(chr(10)) />
-    </cfif>
-
-    <!--- Create iterator --->
-    <cfset setIterator(iteratorFactory.createRecurrenceIterator(
-                          rdata.toString(),
-                          dateToDateValue(arguments.startDate),
-                          javaCast("null", ""),
-                          javaCast("boolean", true)))
-    />
+    <!--- Initializes the iterator --->
+    <cfset initIterator() />
 
     <cfreturn this />
   </cffunction>
@@ -93,6 +73,44 @@
     <cfargument name="newDate" type="date" required="true" />
 
     <cfset getIterator().advanceTo(dateToDateValue(arguments.newDate)) />
+  </cffunction>
+
+  <!---
+    Resets the recurrence at its first occurrence date
+  --->
+  <cffunction name="reset" access="public" returntype="void" ouput="false">
+    <cfset inititerator() />
+  </cffunction>
+
+  <!---
+    Initializes the iterator for this recurrence
+  --->
+  <cffunction name="initIterator" access="private" returntype="void" output="false">
+    <!--- Define local variables --->
+    <cfset var iteratorFactory = createObject("java", "com.google.ical.iter.RecurrenceIteratorFactory") />
+    <cfset var rdata = createObject("java", "java.lang.StringBuilder") />
+
+    <!--- Build recurrence data --->
+    <cfif structKeyExists(variables.data, "rrule") AND (NOT isNull(variables.data.rrule)) AND (len(variables.data.rrule) gt 0)>
+      <cfset rdata.append("RRULE:").append(variables.data.rrule).append(chr(10)) />
+    </cfif>
+    <cfif structKeyExists(variables.data, "exrule") AND (NOT isNull(variables.data.exrule)) AND (len(variables.data.exrule) gt 0)>
+      <cfset rdata.append("EXRULE:").append(variables.data.exrule).append(chr(10)) />
+    </cfif>
+    <cfif structKeyExists(variables.data, "rdate") AND (NOT isNull(variables.data.rdate)) AND (len(variables.data.rdate) gt 0)>
+      <cfset rdata.append("RDATE:").append(variables.data.rdate).append(chr(10)) />
+    </cfif>
+    <cfif structKeyExists(variables.data, "exdate") AND (NOT isNull(variables.data.exdate)) AND (len(variables.data.exdate) gt 0)>
+      <cfset rdata.append("EXDATE:").append(variables.data.exdate).append(chr(10)) />
+    </cfif>
+
+    <!--- Create iterator --->
+    <cfset setIterator(iteratorFactory.createRecurrenceIterator(
+                          rdata.toString(),
+                          dateToDateValue(variables.data.startDate),
+                          javaCast("null", ""),
+                          javaCast("boolean", true)))
+    />
   </cffunction>
 
   <!---
