@@ -65,6 +65,32 @@
   </cffunction>
 
   <!---
+    Returns the last date in this recurrence
+
+    @return the last date in this recurrence
+
+    @throws InfiniteRecurrenceException when this recurrence is infinite
+  --->
+  <cffunction name="last" access="public" returntype="date" output="false">
+    <!--- Define local variables --->
+    <cfset var iterator = getIterator() />
+    <cfset var nextDate = "" />
+
+    <!--- Check if recurrence is infinite --->
+    <cfif isInfinite()>
+      <cfthrow type="libicalrecurrence.ICalRecurrence.InfiniteRecurrenceException"
+               message="Unable to get last date because this recurrence is infinite" />
+    </cfif>
+
+    <!--- Loop over the full recurrence --->
+    <cfloop condition="#iterator.hasNext()#">
+      <cfset nextDate = iterator.next() />
+    </cfloop>
+
+    <cfreturn dateValueToDate(nextDate) />
+  </cffunction>
+
+  <!---
     Indicates whether this recurrence is infinite
 
     @return true if this recurrence is infinite, false otherwise
