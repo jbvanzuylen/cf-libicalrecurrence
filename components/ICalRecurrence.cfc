@@ -65,6 +65,24 @@
   </cffunction>
 
   <!---
+    Indicates whether this recurrence is infinite
+
+    @return true if this recurrence is infinite, false otherwise
+  --->
+  <cffunction name="isInfinite" access="public" returntype="boolean" ouput="false">
+    <!--- Define local variables --->
+    <cfset var rrule = createObject("java", "com.google.ical.values.RRule") />
+
+    <!--- Check --->
+    <cfif structKeyExists(variables.data, "rrule") AND (NOT isNull(variables.data.rrule)) AND (len(variables.data.rrule) gt 0)>
+      <cfset rrule.init("RRULE:" & variables.data.rrule) />
+      <cfreturn (rrule.getCount() lte 0) AND isNull(rrule.getUntil()) />
+    <cfelse>
+      <cfreturn false />
+    </cfif>
+  </cffunction>
+
+  <!---
     Skips all dates in this recurrence before the specified date
 
     @param newDate the date to which this recurrence is to be moved forward
