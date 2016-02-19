@@ -21,6 +21,7 @@ __Install as an extension__
 
 __Manual installation__
 
-* Unzip the file you have downloaded above
+* Unzip the file you have downloaded 
+* Copy the `.jar` files from the `lib` folder to the `WEB-INF\railo\library\lib directory` in your web root
 * Copy the `.cfm` files from the `functions` folder to the `WEB-INF\railo\library\function` directory in your web root
 * Copy the `.cfc` file from the `components` folder to the `WEB-INF\railo\components\libicalrecurrence` directory in your web root
