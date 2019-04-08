@@ -8,7 +8,7 @@ Build on top of the [google-rfc-2445](https://code.google.com/p/google-rfc-2445/
 
 ### Lucee 4
 
-Download the latest version [here](https://github.com/jbvanzuylen/cf-libicalrecurrence/releases/download/v0.1.0/cf-libicalrecurrence-ext.zip)
+Download the latest version [here](https://github.com/jbvanzuylen/cf-libicalrecurrence/releases/download/v1.0.0/cf-libicalrecurrence-lucee4-ext.zip)
 
 __Install as an extension__
 
