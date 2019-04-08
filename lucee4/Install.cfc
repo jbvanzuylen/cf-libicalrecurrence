@@ -4,7 +4,7 @@
 
   <!--- Libraries --->
   <cfset variables.libraries = array(
-    "rfc2445-4Mar2011.jar"
+    "com.google.ical-20110304.jar"
   ) />
 
   <!---

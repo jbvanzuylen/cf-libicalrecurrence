@@ -6,10 +6,10 @@
     <name>cf-libicalrecurrence</name>
     <label>iCalendar recurrence library</label>
     <description>Build on top of the google-rfc-2445 library, this library implements a mechanism for evaluating recurrence rules of the RFC 2445.</description>
-    <version>@VERSION@</version>
-    <image>https://raw.github.com/jbvanzuylen/cf-libicalrecurrence/master/lucee4/libicalrecurrence-logo.png</image>
+    <version>${pom.version}</version>
+    <image>https://raw.githubusercontent.com/jbvanzuylen/cf-libicalrecurrence/master/logo.png</image>
     <author>Jean-Bernard van Zuylen</author>
     <support>https://github.com/jbvanzuylen/cf-libicalrecurrence/issues</support>
-    <created>@RELEASE_DATE@</created>
+    <created>${ext.release.date}</created>
   </info>
 </config>

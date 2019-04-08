@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
-Built-Date: @RELEASE_DATE@
+Built-Date: ${ext.release.date}
 release-type: web
 id: "5FB828E4-0080-4FB1-AFD2E5551A54CCA9"
-version: "@VERSION@"
+version: "${pom.version}"
 name: "cf-libicalrecurrence"
 description: "Build on top of the google-rfc-2445 library, this library implements a mechanism for evaluating recurrence rules of the RFC 2445."
 author: "Jean-Bernard van Zuylen"
