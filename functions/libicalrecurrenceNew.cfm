@@ -1,5 +1,6 @@
 <cffunction name="libicalrecurrenceNew" returntype="libicalrecurrence.ICalRecurrence" output="false">
   <cfargument name="startDate" type="date" required="true" />
+  <cfargument name="timezone" type="string" required="true" />
   <cfargument name="rrule" type="string" required="false" />
   <cfargument name="exrule" type="string" required="false" />
   <cfargument name="rdate" type="string" required="false" />

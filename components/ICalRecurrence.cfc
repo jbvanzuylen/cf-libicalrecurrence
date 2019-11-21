@@ -16,6 +16,7 @@
   <cffunction name="setIterator" access="private" returntype="void" output="false">
     <cfargument name="iterator" type="any" required="true" />
 
+    <!--- Set iterator --->
     <cfset variables.iterator = arguments.iterator />
   </cffunction>
 
@@ -23,15 +24,17 @@
     Initializes this recurrence
 
     @param startDate the date at which the recurrence starts
+    @param tiemzone the timezone of the dates of the recurrence
     @param rrule the iCalendar value for the RRULE property of the recurrence
     @param exrule the iCalendar value for the EXRULE property of the recurrence
     @param rdate the iCalendar value for the RDATE property of the recurrence
     @param exdate the iCalendar value for the EXDATE property of the recurrence
 
-    @return a instance of this component
+    @return an instance of this component
   --->
   <cffunction name="init" access="public" returntype="libicalrecurrence.ICalRecurrence" output="false">
     <cfargument name="startDate" type="date" required="true" />
+    <cfargument name="timezone" type="string" required="true" />
     <cfargument name="rrule" type="string" required="false" />
     <cfargument name="exrule" type="string" required="false" />
     <cfargument name="rdate" type="string" required="false" />
@@ -61,7 +64,8 @@
     @return the next date in this recurrence
   --->
   <cffunction name="next" access="public" returntype="date" output="false">
-    <cfreturn dateValueToDate(getIterator().next()) />
+    <!--- Get next date --->
+    <cfreturn dateValueToDate(fromUtc(getIterator().next())) />
   </cffunction>
 
   <!---
@@ -87,7 +91,8 @@
       <cfset nextDate = iterator.next() />
     </cfloop>
 
-    <cfreturn dateValueToDate(nextDate) />
+    <!--- Convert --->
+    <cfreturn dateValueToDate(fromUtc(nextDate)) />
   </cffunction>
 
   <!---
@@ -116,14 +121,16 @@
   <cffunction name="advanceTo" access="public" returntype="void" output="false">
     <cfargument name="newDate" type="date" required="true" />
 
-    <cfset getIterator().advanceTo(dateToDateValue(arguments.newDate)) />
+    <!--- Skip dates --->
+    <cfset getIterator().advanceTo(toUtc(dateToDateValue(arguments.newDate))) />
   </cffunction>
 
   <!---
     Resets the recurrence at its first occurrence date
   --->
   <cffunction name="reset" access="public" returntype="void" ouput="false">
-    <cfset inititerator() />
+    <!--- Initializes the iterator --->
+    <cfset initIterator() />
   </cffunction>
 
   <!---
@@ -133,6 +140,7 @@
     <!--- Define local variables --->
     <cfset var iteratorFactory = createObject("java", "com.google.ical.iter.RecurrenceIteratorFactory") />
     <cfset var rdata = createObject("java", "java.lang.StringBuilder") />
+    <cfset var timezone = createObject("java", "java.util.TimeZone") />
 
     <!--- Build recurrence data --->
     <cfif structKeyExists(variables.data, "rrule") AND (NOT isNull(variables.data.rrule)) AND (len(variables.data.rrule) gt 0)>
@@ -152,7 +160,7 @@
     <cfset setIterator(iteratorFactory.createRecurrenceIterator(
                           rdata.toString(),
                           dateToDateValue(variables.data.startDate),
-                          javaCast("null", ""),
+                          timezone.getTimeZone(variables.data.timezone),
                           javaCast("boolean", true)))
     />
   </cffunction>
@@ -217,5 +225,41 @@
                            arguments.dateValue.day())
       />
     </cfif>
+  </cffunction>
+
+  <!---
+    Converts the specified DateValue object from UTC to the time zone of this recurrence
+
+    @param dateValue the DateValue object in UTC to be converted
+
+    @return a DateValue object in the time zone of this recurrence
+  --->
+  <cffunction name="fromUtc" access="private" returntype="any" output="false">
+    <cfargument name="dateValue" type="any" required="true" />
+
+    <!--- Define local variables --->
+    <cfset var timeUtils = createObject("java", "com.google.ical.util.TimeUtils") />
+    <cfset var timeZone = createObject("java", "java.util.TimeZone") />
+
+    <!--- Convert --->
+    <cfreturn timeUtils.fromUtc(arguments.dateValue, timeZone.getTimeZone(variables.data.timezone)) />
+  </cffunction>
+
+  <!---
+    Converts the specified DateValue object from the time zone of this recurrence to UTC
+
+    @param dateValue the DateValue object in the time zone of the recurrence to be converted
+
+    @return a DateValue object in UTC
+  --->
+  <cffunction name="toUtc" access="private" returntype="any" output="false">
+    <cfargument name="dateValue" type="any" required="true" />
+
+    <!--- Define local variables --->
+    <cfset var timeUtils = createObject("java", "com.google.ical.util.TimeUtils") />
+    <cfset var timeZone = createObject("java", "java.util.TimeZone") />
+
+    <!--- Convert --->
+    <cfreturn timeUtils.toUtc(arguments.dateValue, timeZone.getTimeZone(variables.data.timezone)) />
   </cffunction>
 </cfcomponent>
