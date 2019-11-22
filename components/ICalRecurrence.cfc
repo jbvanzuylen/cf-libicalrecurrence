@@ -176,28 +176,16 @@
     <cfargument name="date" type="date" required="true" />
 
     <!--- Define local variables --->
-    <cfset var h = hour(arguments.date) />
-    <cfset var m = minute(arguments.date) />
-    <cfset var s = second(arguments.date) />
-    <cfset var dateValue = "" />
+    <cfset var dateValue = createObject("java", "com.google.ical.values.DateTimeValueImpl") />
 
     <!--- Convert --->
-    <cfif (h eq 0) AND (m eq 0) AND (s eq 0)>
-      <cfset dateValue = createObject("java", "com.google.ical.values.DateValueImpl") />
-      <cfreturn dateValue.init(year(arguments.date),
-                               month(arguments.date),
-                               day(arguments.date))
-      />
-    <cfelse>
-      <cfset dateValue = createObject("java", "com.google.ical.values.DateTimeValueImpl") />
-      <cfreturn dateValue.init(year(arguments.date),
-                               month(arguments.date),
-                               day(arguments.date),
-                               h,
-                               m,
-                               s)
-      />
-    </cfif>
+    <cfreturn dateValue.init(year(arguments.date),
+                             month(arguments.date),
+                             day(arguments.date),
+                             hour(arguments.date),
+                             minute(arguments.date),
+                             second(arguments.date))
+    />
   </cffunction>
 
   <!---
